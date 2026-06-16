@@ -1,42 +1,19 @@
-```html
 <div class="crm-banner">
-  <pre class="ascii">
+
+```
  ██████╗██████╗ ███╗   ███╗   █████╗
 ██╔════╝██╔══██╗████╗ ████║  ██╔══██╗
 ██║     ██████╔╝██╔████╔██║  ███████║
 ██║     ██╔══██╗██║╚██╔╝██║  ██╔══██║
 ╚██████╗██║  ██║██║ ╚═╝ ██║  ██║  ██║
  ╚═════╝╚═╝  ╚═╝╚═╝     ╚═╝  ╚═╝  ╚═╝
-  </pre>
-
-  <div class="meta">
-    <p><b>Intelligent Client & Project Management</b></p>
-    <p>Employee ID: 005 • Author: DropOutBrain AK005</p>
-    <p>Version: 1.0.0 • Powered by Entrogic</p>
-  </div>
-</div>
-
-<style>
-.crm-banner{
-  text-align:center;
-  padding:20px 10px;
-  font-family: monospace;
-}
-
-.ascii{
-  font-size: clamp(8px, 2vw, 14px);
-  line-height: 1.1;
-  margin: 0;
-  overflow-x: auto;
-}
-
-.meta{
-  margin-top: 10px;
-  font-size: clamp(12px, 2vw, 14px);
-  line-height: 1.4;
-}
-</style>
 ```
+
+**Intelligent Client & Project Management**  
+Employee ID: 005 • Author: DropOutBrain AK005  
+Version: 1.0.0 • Powered by Entrogic
+
+</div>
 
 ```
 
