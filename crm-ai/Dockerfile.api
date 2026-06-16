@@ -1,0 +1,17 @@
+FROM node:20-alpine AS builder
+WORKDIR /app
+COPY . .
+RUN corepack enable && pnpm install --frozen-lockfile
+RUN pnpm --filter @crm-ai/db generate
+RUN pnpm turbo build --filter=@crm-ai/api...
+
+FROM node:20-alpine
+WORKDIR /app
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/packages ./packages
+COPY --from=builder /app/apps/api/dist ./apps/api/dist
+COPY --from=builder /app/.env ./apps/api/.env
+ENV NODE_ENV=production
+ENV PORT=4000
+EXPOSE 4000
+CMD ["node", "apps/api/dist/server.mjs"]

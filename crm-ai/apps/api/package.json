@@ -1,0 +1,38 @@
+{
+  "name": "@crm-ai/api",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsup",
+    "start": "node dist/server.mjs"
+  },
+  "dependencies": {
+    "@crm-ai/ai": "workspace:*",
+    "@crm-ai/assignments": "workspace:*",
+    "@crm-ai/clients": "workspace:*",
+    "@crm-ai/db": "workspace:*",
+    "@crm-ai/developers": "workspace:*",
+    "@crm-ai/events": "workspace:*",
+    "@crm-ai/gmail": "workspace:*",
+    "@crm-ai/logger": "workspace:*",
+    "@crm-ai/notifications": "workspace:*",
+    "@crm-ai/projects": "workspace:*",
+    "@crm-ai/queue": "workspace:*",
+    "@crm-ai/reminders": "workspace:*",
+    "@crm-ai/requirements": "workspace:*",
+    "@crm-ai/shared": "workspace:*",
+    "@crm-ai/tasks": "workspace:*",
+    "@crm-ai/whatsapp": "workspace:*",
+    "@fastify/cookie": "^9.4.0",
+    "@fastify/cors": "^9.0.0",
+    "@fastify/jwt": "^8.0.1",
+    "fastify": "^4.28.0",
+    "nodemailer": "^6.9.0",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "tsup": "^8.1.0",
+    "tsx": "^4.11.0"
+  }
+}

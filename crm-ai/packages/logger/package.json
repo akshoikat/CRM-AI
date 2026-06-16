@@ -1,0 +1,17 @@
+{
+  "name": "@crm-ai/logger",
+  "version": "0.0.1",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "build": "tsup"
+  },
+  "dependencies": {
+    "pino": "^9.2.0",
+    "pino-pretty": "^11.1.0"
+  },
+  "devDependencies": {
+    "tsup": "^8.1.0"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "name": "@crm-ai/notifications",
+  "version": "0.0.1",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "build": "tsup"
+  },
+  "dependencies": {
+    "@crm-ai/db": "workspace:*",
+    "@crm-ai/shared": "workspace:*",
+    "@crm-ai/events": "workspace:*",
+    "@crm-ai/queue": "workspace:*",
+    "@crm-ai/whatsapp": "workspace:*",
+    "@crm-ai/logger": "workspace:*",
+    "nodemailer": "^6.9.0"
+  },
+  "devDependencies": {
+    "tsup": "^8.1.0"
+  }
+}

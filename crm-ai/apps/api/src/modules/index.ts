@@ -1,0 +1,12 @@
+export { authRoutes } from "./auth/routes";
+export { clientRoutes } from "./clients/routes";
+export { projectRoutes } from "./projects/routes";
+export { developerRoutes } from "./developers/routes";
+export { taskRoutes } from "./tasks/routes";
+export { requirementRoutes } from "./requirements/routes";
+export { reminderRoutes } from "./reminders/routes";
+export { conversationRoutes } from "./conversations/routes";
+export { notificationRoutes } from "./notifications/routes";
+export { integrationRoutes } from "./integrations/routes";
+export { assignmentRoutes } from "./assignments/routes";
+export { settingsRoutes } from "./settings/routes";

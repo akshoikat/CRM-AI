@@ -1,0 +1,297 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ClientStatus {
+  ACTIVE
+  ARCHIVED
+  BLOCKED
+}
+
+enum ProjectStatus {
+  DRAFT
+  ACTIVE
+  PAUSED
+  COMPLETED
+  CANCELLED
+}
+
+enum ProjectPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum RequirementSource {
+  CLIENT
+  DEVELOPER
+  ADMIN
+  AI
+}
+
+enum RequirementStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  IMPLEMENTED
+}
+
+enum SenderType {
+  CLIENT
+  DEVELOPER
+  SYSTEM
+  AGENT
+  ADMIN
+}
+
+enum MessageChannel {
+  GMAIL
+  WHATSAPP
+  DASHBOARD
+}
+
+enum DeveloperRole {
+  FRONTEND
+  BACKEND
+  FULLSTACK
+  DESIGNER
+  QA
+}
+
+enum DeveloperStatus {
+  ACTIVE
+  INACTIVE
+  BUSY
+}
+
+enum AssignmentStatus {
+  ACTIVE
+  COMPLETED
+  REMOVED
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  REVIEW
+  DONE
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum ReminderType {
+  CLIENT
+  DEVELOPER
+  PROJECT
+  PAYMENT
+  DEADLINE
+}
+
+enum ReminderStatus {
+  PENDING
+  SENT
+  CANCELLED
+}
+
+enum ReceiverType {
+  CLIENT
+  DEVELOPER
+  ADMIN
+}
+
+enum NotificationChannel {
+  EMAIL
+  WHATSAPP
+  SYSTEM
+}
+
+enum NotificationStatus {
+  PENDING
+  SENT
+  FAILED
+}
+
+model Client {
+  id        String       @id @default(cuid())
+  name      String
+  email     String?      @unique
+  phone     String?
+  whatsapp  String?
+  company   String?
+  timezone  String?
+  status    ClientStatus @default(ACTIVE)
+
+  projects Project[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Project {
+  id          String        @id @default(cuid())
+  clientId    String
+  client      Client        @relation(fields: [clientId], references: [id])
+
+  title       String
+  description String?
+  statement   String?
+  budget      Decimal?
+  currency    String?
+  priority    ProjectPriority @default(MEDIUM)
+  status      ProjectStatus @default(DRAFT)
+
+  startDate   DateTime?
+  deadline    DateTime?
+  completedAt DateTime?
+
+  requirements Requirement[]
+  conversations Conversation[]
+  tasks         Task[]
+  reminders     Reminder[]
+  assignments   Assignment[]
+  memory        ProjectMemory?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Requirement {
+  id          String            @id @default(cuid())
+  projectId   String
+  project     Project           @relation(fields: [projectId], references: [id])
+
+  title       String
+  description String?
+  source      RequirementSource
+  status      RequirementStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Conversation {
+  id          String         @id @default(cuid())
+  projectId   String
+  project     Project        @relation(fields: [projectId], references: [id])
+
+  senderType  SenderType
+  channel     MessageChannel
+  message     String
+  messageType String?
+
+  createdAt DateTime @default(now())
+}
+
+model Developer {
+  id           String          @id @default(cuid())
+  name         String
+  email        String          @unique
+  password     String?
+  phone        String?
+  skills       Json?
+  availability Boolean         @default(true)
+  status       DeveloperStatus @default(ACTIVE)
+
+  assignments Assignment[]
+  tasks       Task[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Assignment {
+  id          String           @id @default(cuid())
+  projectId   String
+  developerId String
+
+  project   Project          @relation(fields: [projectId], references: [id])
+  developer Developer        @relation(fields: [developerId], references: [id])
+
+  role        DeveloperRole
+  status      AssignmentStatus @default(ACTIVE)
+
+  assignedAt DateTime @default(now())
+}
+
+model Task {
+  id          String     @id @default(cuid())
+  projectId   String
+  developerId String?
+
+  project   Project    @relation(fields: [projectId], references: [id])
+  developer Developer? @relation(fields: [developerId], references: [id])
+
+  title       String
+  description String?
+  priority    TaskPriority @default(MEDIUM)
+  status      TaskStatus   @default(TODO)
+
+  startDate   DateTime?
+  deadline    DateTime?
+  completedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Reminder {
+  id         String         @id @default(cuid())
+  projectId  String
+  project    Project        @relation(fields: [projectId], references: [id])
+
+  type       ReminderType
+  scheduleAt DateTime
+  status     ReminderStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+}
+
+model Notification {
+  id           String             @id @default(cuid())
+  receiverType ReceiverType
+  receiverId   String
+  channel      NotificationChannel
+  title        String
+  body         String
+  status       NotificationStatus @default(PENDING)
+
+  sentAt   DateTime?
+  createdAt DateTime @default(now())
+}
+
+model ProjectMemory {
+  id              String  @id @default(cuid())
+  projectId       String  @unique
+  project         Project @relation(fields: [projectId], references: [id])
+
+  summary         String?
+  lastRequirement String?
+  lastDiscussion  String?
+  nextAction      String?
+  lastTopics      Json?
+  pendingItems    Json?
+  risks           Json?
+
+  updatedAt DateTime @updatedAt
+}
+
+model EventLog {
+  id         String   @id @default(cuid())
+  event      String
+  entityType String
+  entityId   String
+  payload    Json?
+
+  createdAt DateTime @default(now())
+}

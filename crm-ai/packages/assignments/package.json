@@ -1,0 +1,17 @@
+{
+  "name": "@crm-ai/assignments",
+  "version": "0.0.1",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "build": "tsup"
+  },
+  "dependencies": {
+    "@crm-ai/db": "workspace:*",
+    "@crm-ai/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "tsup": "^8.1.0"
+  }
+}
