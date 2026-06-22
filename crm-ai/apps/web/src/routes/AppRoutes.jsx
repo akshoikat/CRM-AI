@@ -9,6 +9,8 @@ import ProjectDetail from '../pages/projects/ProjectDetail'
 import DeveloperList from '../pages/developers/DeveloperList'
 import Chat from '../pages/conversations/Chat'
 import Settings from '../pages/settings/Settings'
+import AgentList from '../pages/agents/AgentList'
+import AdminPanel from '../pages/admin/AdminPanel'
 
 export function AppRoutes() {
   return (
@@ -26,6 +28,8 @@ export function AppRoutes() {
         <Route path="/projects" element={<ProjectList />} />
         <Route path="/projects/:id" element={<ProjectDetail />} />
         <Route path="/developers" element={<DeveloperList />} />
+        <Route path="/agents" element={<AgentList />} />
+        <Route path="/admin" element={<AdminPanel />} />
         <Route path="/conversations" element={<Chat />} />
         <Route path="/settings" element={<Settings />} />
       </Route>

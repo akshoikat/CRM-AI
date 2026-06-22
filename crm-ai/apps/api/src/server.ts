@@ -15,10 +15,33 @@ import {
   integrationRoutes,
   assignmentRoutes,
   settingsRoutes,
+  agentRoutes,
+  aiRoutes,
+  knowledgeBaseRoutes,
+  approvalRoutes,
+  sseRoutes,
 } from "./modules";
+import {
+  CoordinatorAgent,
+  AssignmentAgent,
+  FinanceAgent,
+  QAAgent,
+  MeetingAgent,
+  EstimateAgent,
+} from "@crm-ai/ai";
+import { AgentRegistryService } from "@crm-ai/agents-registry";
 
 async function main() {
   const app = Fastify({ logger: false });
+
+  new CoordinatorAgent();
+  new AssignmentAgent();
+  new FinanceAgent();
+  new QAAgent();
+  new MeetingAgent();
+  new EstimateAgent();
+
+  logger.info("All 6 agents registered with event bus");
 
   await app.register(cors, { origin: true, credentials: true });
   await registerAuth(app);
@@ -41,9 +64,19 @@ async function main() {
       await api.register(integrationRoutes);
       await api.register(assignmentRoutes);
       await api.register(settingsRoutes);
+      await api.register(agentRoutes);
+      await api.register(aiRoutes);
+      await api.register(knowledgeBaseRoutes);
+      await api.register(approvalRoutes);
+      await api.register(sseRoutes);
     },
     { prefix: "/api" }
   );
+
+  const agentRegistry = new AgentRegistryService();
+  agentRegistry.seedAll().catch((err) => {
+    logger.warn({ err }, "Agent seeding failed (non-fatal)");
+  });
 
   const port = Number(process.env.PORT) || 4000;
 

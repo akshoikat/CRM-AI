@@ -132,7 +132,8 @@ model Client {
   timezone  String?
   status    ClientStatus @default(ACTIVE)
 
-  projects Project[]
+  projects     Project[]
+  preferences  ClientPreference[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -161,6 +162,7 @@ model Project {
   reminders     Reminder[]
   assignments   Assignment[]
   memory        ProjectMemory?
+  decisions     HistoricalDecision[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -286,6 +288,20 @@ model ProjectMemory {
   updatedAt DateTime @updatedAt
 }
 
+model Agent {
+  id          String   @id
+  username    String   @unique
+  displayName String
+  version     String
+  capabilities Json
+  permissions Json?
+  status      String   @default("ACTIVE")
+  description String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model EventLog {
   id         String   @id @default(cuid())
   event      String
@@ -294,4 +310,54 @@ model EventLog {
   payload    Json?
 
   createdAt DateTime @default(now())
+}
+
+model ClientPreference {
+  id        String   @id @default(cuid())
+  clientId  String
+  client    Client   @relation(fields: [clientId], references: [id])
+  key       String
+  value     String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model HistoricalDecision {
+  id        String   @id @default(cuid())
+  projectId String
+  project   Project  @relation(fields: [projectId], references: [id])
+  decision  String
+  context   String?
+  outcome   String?
+
+  createdAt DateTime @default(now())
+}
+
+model Document {
+  id        String   @id @default(cuid())
+  title     String
+  content   String
+  category  String   @default("GENERAL")
+  tags      Json?
+  embedding Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PendingApproval {
+  id          String   @id @default(cuid())
+  type        String
+  entityType  String
+  entityId    String
+  data        Json
+  requestedBy String
+  approvedBy  String?
+  status      String   @default("PENDING")
+  reason      String?
+  reviewedAt  DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

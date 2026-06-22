@@ -64,6 +64,19 @@ export interface MemoryUpdatedPayload {
   projectId: string;
 }
 
+export interface AgentMessagePayload {
+  toAgentId: string;
+  fromAgentId: string;
+  event: string;
+  data: unknown;
+  correlationId?: string;
+}
+
+export interface AgentRegisteredPayload {
+  agentId: string;
+  username: string;
+}
+
 export type EventPayloads = {
   PROJECT_CREATED: ProjectCreatedPayload;
   PROJECT_UPDATED: ProjectUpdatedPayload;
@@ -79,4 +92,10 @@ export type EventPayloads = {
   MEMORY_UPDATED: MemoryUpdatedPayload;
   INTENT_DETECTED: { projectId: string; intent: string };
   TASK_COMPLETED: { projectId: string; taskId: string; developerId?: string };
+  AGENT_MESSAGE_SENT: AgentMessagePayload;
+  AGENT_REGISTERED: AgentRegisteredPayload;
+  AGENT_REQUEST_RECEIVED: AgentMessagePayload;
+  AGENT_RESPONSE_SENT: AgentMessagePayload;
+  AGENT_STATUS_CHANGED: { agentId: string; status: string };
+  AGENT_ERROR: { agentId: string; error: string; event: string };
 };

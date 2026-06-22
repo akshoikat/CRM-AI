@@ -10,7 +10,7 @@ export async function conversationRoutes(app: FastifyInstance) {
   app.get("/conversations", async (req, reply) => {
     try {
       const { projectId } = req.query as { projectId: string };
-      if (!projectId) throw new Error("projectId is required");
+      if (!projectId) return reply.status(400).send({ error: "projectId is required" });
       return prisma.conversation.findMany({
         where: { projectId },
         orderBy: { createdAt: "asc" },

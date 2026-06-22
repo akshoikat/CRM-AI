@@ -119,6 +119,19 @@ export type ProjectMemory = {
   updatedAt: string;
 };
 
+export type Agent = {
+  id: string;
+  username: string;
+  displayName: string;
+  version: string;
+  capabilities: string[];
+  permissions: { can: string[]; cannot: string[] } | null;
+  status: string;
+  description: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type EventLog = {
   id: string;
   event: string;
@@ -136,4 +149,48 @@ export type ProjectContext = {
   memory: ProjectMemory | null;
   tasks: Task[];
   assignments: Assignment[];
+};
+
+export type ClientPreference = {
+  id: string;
+  clientId: string;
+  key: string;
+  value: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type HistoricalDecision = {
+  id: string;
+  projectId: string;
+  decision: string;
+  context: string | null;
+  outcome: string | null;
+  createdAt: string;
+};
+
+export type Document = {
+  id: string;
+  title: string;
+  content: string;
+  category: string;
+  tags: string[] | null;
+  embedding: number[] | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type PendingApproval = {
+  id: string;
+  type: string;
+  entityType: string;
+  entityId: string;
+  data: unknown;
+  requestedBy: string;
+  approvedBy: string | null;
+  status: string;
+  reason: string | null;
+  reviewedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
 };

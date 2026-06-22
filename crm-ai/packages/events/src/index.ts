@@ -11,5 +11,7 @@ export type {
   DeadlineApproachingPayload,
   ReminderTriggeredPayload,
   MemoryUpdatedPayload,
+  AgentMessagePayload,
+  AgentRegisteredPayload,
 } from "./payloads";
-export { on, emit, removeAllListeners } from "./bus";
+export { on, emit, register, send, request, respond, unregister, removeAllListeners } from "./bus";

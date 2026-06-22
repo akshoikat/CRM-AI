@@ -1,0 +1,21 @@
+{
+  "name": "@crm-ai/worker",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsup",
+    "start": "node dist/index.mjs"
+  },
+  "dependencies": {
+    "@crm-ai/db": "workspace:*",
+    "@crm-ai/events": "workspace:*",
+    "@crm-ai/logger": "workspace:*",
+    "@crm-ai/notifications": "workspace:*",
+    "@crm-ai/queue": "workspace:*"
+  },
+  "devDependencies": {
+    "tsup": "^8.1.0",
+    "tsx": "^4.11.0"
+  }
+}

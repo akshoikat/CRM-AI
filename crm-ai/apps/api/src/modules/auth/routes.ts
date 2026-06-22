@@ -16,6 +16,12 @@ export async function authRoutes(app: FastifyInstance) {
       if (!name || !email || !password) {
         return reply.status(400).send({ error: "Name, email, and password are required" });
       }
+      if (password.length < 8) {
+        return reply.status(400).send({ error: "Password must be at least 8 characters" });
+      }
+      if (!/[a-zA-Z]/.test(password) || !/[0-9]/.test(password)) {
+        return reply.status(400).send({ error: "Password must contain at least one letter and one number" });
+      }
       const user = await service.register(email, password, name);
       return reply.status(201).send({
         id: user.id,
@@ -44,7 +50,8 @@ export async function authRoutes(app: FastifyInstance) {
         return reply.status(401).send({ error: "Invalid email or password" });
       }
       const token = app.jwt.sign({ id: user.id, email: user.email });
-      return { token, user };
+      const { password: _, ...safeUser } = user as any;
+      return { token, user: safeUser };
     } catch (error) {
       return handleError(reply, error);
     }
@@ -52,7 +59,6 @@ export async function authRoutes(app: FastifyInstance) {
 
   app.get(
     "/me",
-    { preHandler: [authenticate] },
     async (req, reply) => {
       try {
         const { id } = req.user as { id: string };

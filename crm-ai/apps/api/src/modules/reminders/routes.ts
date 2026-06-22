@@ -18,10 +18,16 @@ export async function reminderRoutes(app: FastifyInstance) {
   app.post("/reminders", async (req, reply) => {
     try {
       const body = createReminderSchema.parse(req.body);
+      const type = body.type || "DEADLINE";
+      const scheduleAt = body.scheduleAt
+        ? new Date(body.scheduleAt)
+        : body.dueDate
+          ? new Date(body.dueDate)
+          : new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
       return service.create({
         projectId: body.projectId,
-        type: body.type,
-        scheduleAt: new Date(body.scheduleAt),
+        type,
+        scheduleAt,
       });
     } catch (error) {
       return handleError(reply, error);

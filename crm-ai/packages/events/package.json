@@ -8,7 +8,7 @@
     "build": "tsup"
   },
   "dependencies": {
-    "@crm-ai/shared": "workspace:*"
+    "@crm-ai/db": "workspace:*"
   },
   "devDependencies": {
     "tsup": "^8.1.0"

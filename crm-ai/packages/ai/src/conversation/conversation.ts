@@ -8,8 +8,9 @@ import {
   ProjectMemory,
   RequirementSource,
 } from "@crm-ai/shared";
-import { MemoryService } from "@crm-ai/memory";
+import { MemoryService, LongTermMemoryService } from "@crm-ai/memory";
 import { EventName, emit } from "@crm-ai/events";
+import { VectorSearchService } from "@crm-ai/vector-search";
 import { logger } from "@crm-ai/logger";
 
 function createDeepSeek() {
@@ -32,9 +33,13 @@ type IntentResult = {
 
 export class ConversationAgent {
   private memoryService: MemoryService;
+  private vectorSearch: VectorSearchService;
+  private longTermMemory: LongTermMemoryService;
 
   constructor() {
     this.memoryService = new MemoryService();
+    this.vectorSearch = new VectorSearchService();
+    this.longTermMemory = new LongTermMemoryService();
   }
 
   async processMessage(data: {
@@ -310,11 +315,26 @@ export class ConversationAgent {
     try {
       const context = await this.loadProjectContext(projectId);
 
+      let ragContext = "";
+      let clientHistory = "";
+      try {
+        ragContext = await this.vectorSearch.buildRAGContext(message);
+        if (context?.client?.id) {
+          clientHistory = await this.longTermMemory.buildClientContext(
+            (context.client as any).id
+          );
+        }
+      } catch (err) {
+        logger.error({ err }, "RAG context build failed, continuing without it");
+      }
+
       const systemPrompt = [
         "You are a helpful project management assistant for a CRM system.",
         "You help manage client projects, track requirements, and coordinate tasks.",
         "Be concise, professional, and friendly.",
         "",
+        ragContext,
+        clientHistory,
         "=== PROJECT CONTEXT ===",
         context
           ? [

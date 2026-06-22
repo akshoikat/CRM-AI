@@ -13,8 +13,7 @@
     "@crm-ai/events": "workspace:*",
     "@crm-ai/db": "workspace:*",
     "@crm-ai/logger": "workspace:*",
-    "@langchain/core": "^0.2.0",
-    "@langchain/langgraph": "^0.0.20",
+    "@crm-ai/vector-search": "workspace:*",
     "openai": "^4.47.0",
     "zod": "^3.23.0"
   },

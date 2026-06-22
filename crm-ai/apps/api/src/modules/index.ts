@@ -10,3 +10,8 @@ export { notificationRoutes } from "./notifications/routes";
 export { integrationRoutes } from "./integrations/routes";
 export { assignmentRoutes } from "./assignments/routes";
 export { settingsRoutes } from "./settings/routes";
+export { agentRoutes } from "./agents/routes";
+export { aiRoutes } from "./ai/routes";
+export { knowledgeBaseRoutes } from "./knowledge-base/routes";
+export { approvalRoutes } from "./approvals/routes";
+export { sseRoutes } from "./sse/routes";

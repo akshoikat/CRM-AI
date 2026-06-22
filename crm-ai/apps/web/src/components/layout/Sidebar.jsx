@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import {
-  LayoutDashboard, Users, FolderKanban, Code2, MessageSquare, Settings,
+  LayoutDashboard, Users, FolderKanban, Code2, Bot, MessageSquare, Settings, Shield,
   ChevronLeft, ChevronRight, LogOut, Menu, X,
 } from 'lucide-react'
 import { useAuth } from '../../contexts/AuthContext'
@@ -11,7 +11,9 @@ const navItems = [
   { to: '/clients', label: 'Clients', icon: Users },
   { to: '/projects', label: 'Projects', icon: FolderKanban },
   { to: '/developers', label: 'Developers', icon: Code2 },
+  { to: '/agents', label: 'Agents', icon: Bot },
   { to: '/conversations', label: 'Conversations', icon: MessageSquare },
+  { to: '/admin', label: 'Admin', icon: Shield },
   { to: '/settings', label: 'Settings', icon: Settings },
 ]
 

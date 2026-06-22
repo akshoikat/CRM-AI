@@ -1,0 +1,19 @@
+{
+  "name": "@crm-ai/scheduler",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsup",
+    "start": "node dist/index.mjs"
+  },
+  "dependencies": {
+    "@crm-ai/ai": "workspace:*",
+    "@crm-ai/db": "workspace:*",
+    "@crm-ai/logger": "workspace:*"
+  },
+  "devDependencies": {
+    "tsup": "^8.1.0",
+    "tsx": "^4.11.0"
+  }
+}

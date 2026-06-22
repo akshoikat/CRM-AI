@@ -1,39 +1,52 @@
 import { MemoryService } from "@crm-ai/memory";
-import { EventName, EventPayloads } from "@crm-ai/events";
+import {
+  EventName,
+  register,
+  respond,
+} from "@crm-ai/events";
 import { logger } from "@crm-ai/logger";
+
+const AGENT_ID = "AG-0001";
 
 export class CoordinatorAgent {
   private memoryService: MemoryService;
 
   constructor() {
     this.memoryService = new MemoryService();
+    this.registerWithBus();
   }
 
-  async handleEvent(eventName: string, payload: any) {
-    logger.info({ eventName }, "Coordinator: handling event");
-
-    try {
-      switch (eventName) {
-        case EventName.CLIENT_MESSAGE_RECEIVED:
+  private registerWithBus() {
+    register(AGENT_ID, {
+      [EventName.CLIENT_MESSAGE_RECEIVED]: async (payload: any) => {
+        logger.info("Coordinator: client message received — building memory");
+        await this.memoryService.buildMemory(payload.projectId);
+      },
+      [EventName.PROJECT_CREATED]: async (payload: any) => {
+        logger.info("Coordinator: project created — building memory");
+        await this.memoryService.buildMemory(payload.projectId);
+      },
+      [EventName.TASK_COMPLETED]: async (payload: any) => {
+        if (payload.projectId) {
+          logger.info("Coordinator: task completed — building memory");
           await this.memoryService.buildMemory(payload.projectId);
-          break;
-        case EventName.PROJECT_CREATED:
-          await this.memoryService.buildMemory(payload.projectId);
-          break;
-        case EventName.TASK_COMPLETED:
-          if (payload.projectId) {
-            await this.memoryService.buildMemory(payload.projectId);
-          }
-          break;
-        case EventName.DEADLINE_APPROACHING:
-          logger.warn({ projectId: payload.projectId }, "Deadline approaching");
-          break;
-        case EventName.REMINDER_TRIGGERED:
-          logger.info({ reminderId: payload.reminderId }, "Reminder triggered");
-          break;
-      }
-    } catch (err) {
-      logger.error({ err, eventName }, "Coordinator handler failed");
-    }
+        }
+      },
+      [EventName.DEADLINE_APPROACHING]: async (payload: any) => {
+        logger.warn(
+          { projectId: payload.projectId, daysRemaining: payload.daysRemaining },
+          "Coordinator: deadline approaching"
+        );
+      },
+      [EventName.REMINDER_TRIGGERED]: async (payload: any) => {
+        logger.info({ reminderId: payload.reminderId }, "Coordinator: reminder triggered");
+      },
+      [EventName.AGENT_REQUEST_RECEIVED]: async (payload: any) => {
+        const correlationId = payload._correlationId;
+        if (!correlationId) return;
+        respond(correlationId, { acknowledged: true, agent: AGENT_ID, received: Date.now() });
+      },
+    });
   }
+
 }
